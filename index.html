@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="la">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Lectionarium Bibliae Sacrae Vulgatae quotidianum">
+<title>Lectio Vulgatæ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --parchment: #f4ecd8;
+  --parchment-shade: #ebe0c3;
+  --parchment-dark: #d9ca9f;
+  --ink: #3d2817;
+  --ink-light: #5a4030;
+  --ink-faded: #8a6d4f;
+  --rubric: #8b2020;
+  --rubric-dark: #6b1515;
+  --gold: #a67c0a;
+  --gold-bright: #c49a20;
+  --done-bg: rgba(166, 124, 10, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+body {
+  background-image:
+    radial-gradient(ellipse at top left, rgba(139, 109, 79, 0.08), transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(139, 32, 32, 0.05), transparent 60%);
+}
+
+.page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.chronicle-header {
+  text-align: center;
+  padding: 1.25rem 0 1.75rem;
+  border-bottom: 3px double var(--ink-faded);
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.chronicle-header::before,
+.chronicle-header::after {
+  content: "❦";
+  position: absolute;
+  color: var(--rubric);
+  font-size: 1.3rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.chronicle-header::before { left: 0.5rem; }
+.chronicle-header::after { right: 0.5rem; }
+
+.title-main {
+  font-family: 'UnifrakturCook', 'Cormorant Garamond', serif;
+  font-size: 2.6rem;
+  color: var(--rubric);
+  margin: 0 0 0.3rem;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+
+.title-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--ink-light);
+  margin: 0;
+}
+
+.title-tertiary {
+  font-size: 0.85rem;
+  color: var(--ink-faded);
+  margin: 0.3rem 0 0;
+  font-variant: small-caps;
+  letter-spacing: 0.15em;
+}
+
+.progress-card {
+  background: var(--parchment-shade);
+  border: 1px solid var(--ink-faded);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  box-shadow: inset 0 0 30px rgba(139, 109, 79, 0.1);
+}
+
+.progress-card::before {
+  content: "";
+  position: absolute;
+  top: 4px; left: 4px; right: 4px; bottom: 4px;
+  border: 1px solid rgba(139, 109, 79, 0.3);
+  pointer-events: none;
+}
+
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.progress-label {
+  font-variant: small-caps;
+  letter-spacing: 0.12em;
+  font-size: 0.9rem;
+  color: var(--ink-light);
+}
+
+.progress-stat {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--rubric);
+}
+
+.progress-bar {
+  height: 10px;
+  background: var(--parchment-dark);
+  border: 1px solid var(--ink-faded);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  transition: width 0.5s ease;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* NT: red (rubric color) — for the gospels and epistles */
+.progress-fill-nt {
+  background: linear-gradient(90deg, var(--rubric), #b03030);
+}
+
+/* OT: gold — keep the gold for OT */
+.progress-fill-ot {
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+}
+
+.todays-reading {
+  background: var(--parchment);
+  border: 2px solid var(--rubric);
+  padding: 1.5rem 1.25rem;
+  margin-bottom: 2rem;
+  position: relative;
+  box-shadow: 3px 3px 0 var(--ink-faded);
+}
+
+.todays-reading::before {
+  content: "HODIE";
+  position: absolute;
+  top: -0.7rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--parchment);
+  padding: 0 1rem;
+  color: var(--rubric);
+  font-variant: small-caps;
+  letter-spacing: 0.2em;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.today-meta {
+  font-size: 0.8rem;
+  color: var(--ink-faded);
+  font-variant: small-caps;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.4rem;
+}
+
+.today-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  margin: 0 0 0.2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  font-style: italic;
+  color: var(--rubric);
+}
+
+.today-title-cn {
+  color: var(--ink-light);
+  font-size: 1rem;
+  margin: 0 0 0.4rem;
+}
+
+.today-portion {
+  color: var(--ink-light);
+  font-size: 0.95rem;
+  margin: 0 0 1.2rem;
+}
+
+.today-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.95rem;
+  padding: 0.55rem 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  letter-spacing: 0.04em;
+  font-variant: small-caps;
+  border-radius: 2px;
+}
+
+.btn-primary {
+  background: var(--rubric);
+  color: var(--parchment);
+  border: 2px solid var(--rubric-dark);
+}
+
+.btn-primary:hover {
+  background: var(--rubric-dark);
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.btn-secondary {
+  background: var(--parchment);
+  color: var(--ink);
+  border: 2px solid var(--ink-faded);
+}
+
+.btn-secondary:hover {
+  background: var(--parchment-shade);
+  border-color: var(--ink);
+}
+
+.btn-tertiary {
+  background: var(--parchment);
+  color: var(--gold);
+  border: 2px solid var(--gold);
+}
+
+.btn-tertiary:hover {
+  background: var(--gold);
+  color: var(--parchment);
+}
+
+.btn-audio {
+  background: var(--parchment);
+  color: #5a4a78;
+  border: 2px solid #7a6aa0;
+}
+
+.btn-audio:hover {
+  background: #5a4a78;
+  color: var(--parchment);
+  border-color: #5a4a78;
+}
+
+.today-dates {
+  font-size: 0.82rem;
+  color: var(--ink-faded);
+  font-style: italic;
+  margin: 0 0 0.6rem;
+  line-height: 1.4;
+}
+.today-dates strong {
+  color: var(--ink-light);
+  font-weight: 500;
+  font-style: normal;
+}
+
+.testament-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0;
+  border-bottom: 2px solid var(--ink-faded);
+}
+
+.tab-btn {
+  flex: 1;
+  background: transparent;
+  color: var(--ink-faded);
+  border: none;
+  padding: 0.9rem 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  font-variant: small-caps;
+}
+
+.tab-btn:hover {
+  color: var(--ink);
+  background: var(--parchment-shade);
+}
+
+.tab-btn.active {
+  color: var(--rubric);
+  border-bottom-color: var(--rubric);
+  background: var(--parchment);
+}
+
+.tab-btn .tab-count {
+  font-size: 0.75rem;
+  color: var(--ink-faded);
+  font-variant: normal;
+  margin-left: 0.3rem;
+}
+
+.tab-btn.active .tab-count {
+  color: var(--gold);
+}
+
+.books-pane {
+  display: none;
+  background: var(--parchment);
+  border: 1px solid var(--ink-faded);
+  border-top: none;
+  padding: 0;
+}
+
+.books-pane.active {
+  display: block;
+}
+
+.book-section {
+  border-bottom: 1px solid rgba(139, 109, 79, 0.3);
+}
+
+.book-section:last-child {
+  border-bottom: none;
+}
+
+.book-header {
+  padding: 0.7rem 1rem;
+  background: var(--parchment);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+  gap: 0.6rem;
+}
+
+.book-header:hover {
+  background: var(--parchment-shade);
+}
+
+.book-section.open .book-header {
+  background: var(--parchment-shade);
+  border-bottom: 1px solid var(--ink-faded);
+}
+
+.book-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.book-title-latin {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--rubric);
+  display: block;
+  line-height: 1.2;
+}
+
+.book-title-cn {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  display: block;
+  margin-top: 0.1rem;
+}
+
+.book-progress {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  font-variant: tabular-nums;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.book-caret {
+  transition: transform 0.2s;
+  color: var(--ink-faded);
+  font-size: 0.85rem;
+}
+
+.book-section.open .book-caret {
+  transform: rotate(90deg);
+}
+
+.book-section.all-done .book-title-latin {
+  color: var(--ink-faded);
+  text-decoration: line-through;
+  text-decoration-color: rgba(139, 32, 32, 0.4);
+}
+
+.readings-list {
+  display: none;
+  background: var(--parchment);
+}
+
+.book-section.open .readings-list {
+  display: block;
+}
+
+.reading-item {
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  border-bottom: 1px dotted rgba(139, 109, 79, 0.3);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.reading-item:last-child {
+  border-bottom: none;
+}
+
+.reading-item:hover {
+  background: var(--parchment-shade);
+}
+
+.reading-item.done {
+  background: var(--done-bg);
+}
+
+.reading-item.today {
+  background: rgba(139, 32, 32, 0.07);
+  border-left: 3px solid var(--rubric);
+  padding-left: calc(1rem - 3px);
+}
+
+.reading-check {
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid var(--ink-light);
+  background: var(--parchment);
+  margin-top: 3px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: var(--rubric);
+  font-weight: bold;
+  transition: all 0.15s;
+}
+
+.reading-item.done .reading-check {
+  background: var(--gold);
+  border-color: var(--gold-bright);
+  color: var(--parchment);
+}
+
+.reading-item.done .reading-check::after {
+  content: "✓";
+}
+
+.reading-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.reading-day {
+  font-size: 0.72rem;
+  color: var(--ink-faded);
+  font-variant: small-caps;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.05rem;
+}
+
+.reading-ref {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1.02rem;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.reading-item.done .reading-ref {
+  color: var(--ink-faded);
+  text-decoration: line-through;
+  text-decoration-color: rgba(139, 32, 32, 0.4);
+}
+
+.reading-note {
+  font-size: 0.8rem;
+  color: var(--rubric);
+  font-style: italic;
+  margin-top: 0.15rem;
+}
+
+.reading-dates {
+  font-size: 0.75rem;
+  color: var(--ink-faded);
+  font-style: italic;
+  margin-top: 0.2rem;
+  letter-spacing: 0.02em;
+}
+
+.reading-item.done .reading-dates {
+  color: var(--gold);
+}
+
+.reading-link {
+  /* legacy class kept for backward compat */
+  display: none;
+}
+
+.row-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+  align-items: stretch;
+}
+
+.row-btn {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.78rem;
+  text-decoration: none;
+  text-align: center;
+  padding: 0.28rem 0.6rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  border: 1px solid var(--ink-faded);
+  min-width: 56px;
+  display: inline-block;
+}
+
+.row-btn-read {
+  background: var(--parchment);
+  color: var(--rubric);
+  border-color: var(--rubric);
+}
+.row-btn-read:hover {
+  background: var(--rubric);
+  color: var(--parchment);
+}
+
+.row-btn-complete {
+  background: var(--parchment);
+  color: var(--gold);
+  border-color: var(--gold);
+}
+.row-btn-complete:hover {
+  background: var(--gold);
+  color: var(--parchment);
+}
+
+.row-btn-audio {
+  background: var(--parchment);
+  color: #5a4a78;
+  border-color: #7a6aa0;
+  position: relative;
+}
+.row-btn-audio:hover {
+  background: #5a4a78;
+  color: var(--parchment);
+  border-color: #5a4a78;
+}
+.row-btn-audio::before {
+  content: "♪ ";
+  letter-spacing: 0;
+}
+
+.row-btn-done-state {
+  background: var(--gold);
+  color: var(--parchment);
+  border-color: var(--gold-bright);
+  cursor: pointer;
+}
+.row-btn-done-state:hover {
+  background: var(--parchment);
+  color: var(--gold);
+}
+
+.date-started {
+  color: var(--rubric);
+}
+.date-completed {
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.tools-bar {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px dotted var(--ink-faded);
+}
+
+.tools-bar button {
+  background: transparent;
+  border: 1px solid var(--ink-faded);
+  color: var(--ink-light);
+  font-family: 'EB Garamond', serif;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 2px;
+  cursor: pointer;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  transition: all 0.2s;
+}
+
+.tools-bar button:hover {
+  background: var(--parchment-shade);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.colophon {
+  text-align: center;
+  padding: 1.75rem 0 0;
+  margin-top: 1.5rem;
+  border-top: 3px double var(--ink-faded);
+  color: var(--ink-faded);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.colophon p {
+  margin: 0.3rem 0;
+}
+
+.colophon-latin {
+  color: var(--rubric);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+
+.colophon a {
+  color: var(--rubric);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--rubric);
+}
+
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(61, 40, 23, 0.6);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-backdrop.show {
+  display: flex;
+}
+
+.modal {
+  background: var(--parchment);
+  border: 2px solid var(--rubric);
+  max-width: 480px;
+  width: 100%;
+  padding: 1.5rem;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.modal h3 {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--rubric);
+  margin-top: 0;
+  font-size: 1.3rem;
+  font-variant: small-caps;
+  letter-spacing: 0.1em;
+}
+
+.modal p {
+  color: var(--ink-light);
+  margin: 0.6rem 0;
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  html, body { font-size: 16px; }
+  .page { padding: 1.25rem 0.85rem 3rem; }
+  .title-main { font-size: 2rem; }
+  .today-title { font-size: 1.35rem; }
+  .today-actions { flex-direction: column; }
+  .today-actions .btn { justify-content: center; }
+  .chronicle-header::before, .chronicle-header::after { display: none; }
+  .reading-item { padding: 0.55rem 0.85rem; gap: 0.5rem; }
+  .row-btn { font-size: 0.72rem; padding: 0.22rem 0.45rem; min-width: 48px; }
+  .book-header { padding: 0.65rem 0.85rem; }
+  .book-title-latin { font-size: 1.05rem; }
+  .tab-btn { padding: 0.75rem 0.5rem; font-size: 1.1rem; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="chronicle-header">
+  <h1 class="title-main">Lectio Vulgatæ</h1>
+  <p class="title-sub">Biblia Sacra per ordinem</p>
+  <p class="title-tertiary">Unaquaque die</p>
+</header>
+
+<section class="progress-card">
+  <!-- New Testament progress -->
+  <div class="progress-row">
+    <span class="progress-label">Novum Testamentum</span>
+    <span class="progress-stat" id="ntStat">0 / 0</span>
+  </div>
+  <div class="progress-bar progress-bar-nt">
+    <div class="progress-fill progress-fill-nt" id="ntFill" style="width: 0%"></div>
+  </div>
+
+  <!-- Old Testament progress -->
+  <div class="progress-row" style="margin-top: 0.9rem;">
+    <span class="progress-label">Vetus Testamentum</span>
+    <span class="progress-stat" id="otStat">0 / 0</span>
+  </div>
+  <div class="progress-bar progress-bar-ot">
+    <div class="progress-fill progress-fill-ot" id="otFill" style="width: 0%"></div>
+  </div>
+
+  <!-- Combined total -->
+  <div class="progress-row" style="margin-top: 0.9rem; margin-bottom: 0; padding-top: 0.5rem; border-top: 1px dashed var(--ink-faded);">
+    <span class="progress-label" style="font-style: italic;">Universim</span>
+    <span class="progress-stat" id="daysCount" style="font-size: 0.95rem;">0 dies</span>
+  </div>
+</section>
+
+<section class="todays-reading" id="todayCard">
+  <div class="today-meta" id="todayMeta">Lectio hodierna</div>
+  <h2 class="today-title" id="todayTitle">—</h2>
+  <p class="today-title-cn" id="todayTitleCn"></p>
+  <p class="today-dates" id="todayDates"></p>
+  <p class="today-portion" id="todayPortion"></p>
+  <div class="today-actions">
+    <a id="todayLink" href="#" target="_blank" rel="noopener" class="btn btn-primary">Lege</a>
+    <a id="todayAudio" href="#" target="_blank" rel="noopener" class="btn btn-audio" style="display:none;">♪ Audi</a>
+    <button class="btn btn-secondary" id="markDoneBtn">Perfeci</button>
+  </div>
+</section>
+
+<div class="testament-tabs">
+  <button class="tab-btn active" data-tab="OT">Vetus Testamentum<span class="tab-count" id="otCount"></span></button>
+  <button class="tab-btn" data-tab="NT">Novum Testamentum<span class="tab-count" id="ntCount"></span></button>
+</div>
+
+<div class="books-pane active" id="pane-OT"></div>
+<div class="books-pane" id="pane-NT"></div>
+
+<div class="tools-bar">
+  <button id="syncBtn">☁ Sync</button>
+  <button id="exportBtn">Exportare</button>
+  <button id="importBtn">Importare</button>
+  <button id="resetBtn">Restituere</button>
+</div>
+<div id="syncStatus" style="text-align:center; font-size:0.78rem; color:var(--ink-faded); margin-top:0.4rem; font-style:italic;">○ Sync inactivum</div>
+
+<footer class="colophon">
+  <p class="colophon-latin">Verbum Domini manet in æternum</p>
+  <p>Textus apud <a href="https://catholicbible.online/side_by_side/OT" target="_blank" rel="noopener">catholicbible.online</a> (Vulgata · Douay-Rheims · Knox)</p>
+  <p>LXXIII libri integri, ordine canonico</p>
+</footer>
+
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+// slug values verified against catholicbible.online/knox/OT and /knox/NT (Apr 2026)
+// Reading order: NT first, then OT
+const BOOKS = [
+  // New Testament (read first) — wp = WordProject audio book number for vg/{wp}/{ch}.htm
+  { t: "NT", slug: "Mat",   wp: 40, latin: "Evangelium secundum Matthæum", cn: "马太福音", ch: 28, pace: "n" },
+  { t: "NT", slug: "Mk",    wp: 41, latin: "Evangelium secundum Marcum", cn: "马可福音", ch: 16, pace: "n" },
+  { t: "NT", slug: "Lk",    wp: 42, latin: "Evangelium secundum Lucam", cn: "路加福音", ch: 24, pace: "n" },
+  { t: "NT", slug: "Jn",    wp: 43, latin: "Evangelium secundum Joannem", cn: "约翰福音", ch: 21, pace: "n" },
+  { t: "NT", slug: "Act",   wp: 44, latin: "Actus Apostolorum", cn: "使徒行传", ch: 28, pace: "n" },
+  { t: "NT", slug: "Rom",   wp: 45, latin: "Epistola ad Romanos", cn: "罗马书", ch: 16, pace: "e" },
+  { t: "NT", slug: "1_Cor", wp: 46, latin: "Epistola I ad Corinthios", cn: "哥林多前书", ch: 16, pace: "e" },
+  { t: "NT", slug: "2_Cor", wp: 47, latin: "Epistola II ad Corinthios", cn: "哥林多后书", ch: 13, pace: "e" },
+  { t: "NT", slug: "Gal",   wp: 48, latin: "Epistola ad Galatas", cn: "加拉太书", ch: 6, pace: "e" },
+  { t: "NT", slug: "Eph",   wp: 49, latin: "Epistola ad Ephesios", cn: "以弗所书", ch: 6, pace: "e" },
+  { t: "NT", slug: "Phl",   wp: 50, latin: "Epistola ad Philippenses", cn: "腓立比书", ch: 4, pace: "e" },
+  { t: "NT", slug: "Col",   wp: 51, latin: "Epistola ad Colossenses", cn: "歌罗西书", ch: 4, pace: "e" },
+  { t: "NT", slug: "1_Th",  wp: 52, latin: "Epistola I ad Thessalonicenses", cn: "帖撒罗尼迦前书", ch: 5, pace: "e" },
+  { t: "NT", slug: "2_Th",  wp: 53, latin: "Epistola II ad Thessalonicenses", cn: "帖撒罗尼迦后书", ch: 3, pace: "e" },
+  { t: "NT", slug: "1_Tim", wp: 54, latin: "Epistola I ad Timotheum", cn: "提摩太前书", ch: 6, pace: "e" },
+  { t: "NT", slug: "2_Tim", wp: 55, latin: "Epistola II ad Timotheum", cn: "提摩太后书", ch: 4, pace: "e" },
+  { t: "NT", slug: "Tit",   wp: 56, latin: "Epistola ad Titum", cn: "提多书", ch: 3, pace: "e" },
+  { t: "NT", slug: "Phm",   wp: 57, latin: "Epistola ad Philemonem", cn: "腓利门书", ch: 1, pace: "e" },
+  { t: "NT", slug: "Heb",   wp: 58, latin: "Epistola ad Hebræos", cn: "希伯来书", ch: 13, pace: "e" },
+  { t: "NT", slug: "Jas",   wp: 59, latin: "Epistola Jacobi", cn: "雅各书", ch: 5, pace: "e" },
+  { t: "NT", slug: "1_Pet", wp: 60, latin: "Epistola I Petri", cn: "彼得前书", ch: 5, pace: "e" },
+  { t: "NT", slug: "2_Pet", wp: 61, latin: "Epistola II Petri", cn: "彼得后书", ch: 3, pace: "e" },
+  { t: "NT", slug: "1_Jn",  wp: 62, latin: "Epistola I Joannis", cn: "约翰一书", ch: 5, pace: "e" },
+  { t: "NT", slug: "2_Jn",  wp: 63, latin: "Epistola II Joannis", cn: "约翰二书", ch: 1, pace: "e" },
+  { t: "NT", slug: "3_Jn",  wp: 64, latin: "Epistola III Joannis", cn: "约翰三书", ch: 1, pace: "e" },
+  { t: "NT", slug: "Jud",   wp: 65, latin: "Epistola Judæ", cn: "犹大书", ch: 1, pace: "e" },
+  { t: "NT", slug: "Apoc",  wp: 66, latin: "Apocalypsis Joannis", cn: "启示录", ch: 22, pace: "pr" },
+
+  // Old Testament (read after NT)
+  // Pentateuch
+  { t: "OT", slug: "Gen",   latin: "Liber Genesis", cn: "创世记", ch: 50, pace: "n" },
+  { t: "OT", slug: "Ex",    latin: "Liber Exodus", cn: "出埃及记", ch: 40, pace: "n" },
+  { t: "OT", slug: "Lev",   latin: "Liber Leviticus", cn: "利未记", ch: 27, pace: "l" },
+  { t: "OT", slug: "Num",   latin: "Liber Numeri", cn: "民数记", ch: 36, pace: "l" },
+  { t: "OT", slug: "Dt",    latin: "Liber Deuteronomii", cn: "申命记", ch: 34, pace: "n" },
+  // Historical
+  { t: "OT", slug: "Jos",   latin: "Liber Josue", cn: "约书亚记", ch: 24, pace: "n" },
+  { t: "OT", slug: "Judg",  latin: "Liber Judicum", cn: "士师记", ch: 21, pace: "n" },
+  { t: "OT", slug: "Ru",    latin: "Liber Ruth", cn: "路得记", ch: 4, pace: "n" },
+  { t: "OT", slug: "1_Kgs", latin: "Liber I Regum", cn: "撒母耳记上", ch: 31, pace: "n" },
+  { t: "OT", slug: "2_Kgs", latin: "Liber II Regum", cn: "撒母耳记下", ch: 24, pace: "n" },
+  { t: "OT", slug: "3_Kgs", latin: "Liber III Regum", cn: "列王纪上", ch: 22, pace: "n" },
+  { t: "OT", slug: "4_Kgs", latin: "Liber IV Regum", cn: "列王纪下", ch: 25, pace: "n" },
+  { t: "OT", slug: "1_Par", latin: "Liber I Paralipomenon", cn: "历代志上", ch: 29, pace: "l" },
+  { t: "OT", slug: "2_Par", latin: "Liber II Paralipomenon", cn: "历代志下", ch: 36, pace: "l" },
+  { t: "OT", slug: "Esd",   latin: "Liber I Esdræ", cn: "以斯拉记", ch: 10, pace: "n" },
+  { t: "OT", slug: "Neh",   latin: "Liber II Esdræ (Nehemiæ)", cn: "尼希米记", ch: 13, pace: "n" },
+  { t: "OT", slug: "Tob",   latin: "Liber Tobiæ", cn: "多俾亚传", ch: 14, pace: "n" },
+  { t: "OT", slug: "Jdt",   latin: "Liber Judith", cn: "友弟德传", ch: 16, pace: "n" },
+  { t: "OT", slug: "Est",   latin: "Liber Esther", cn: "以斯帖记", ch: 16, pace: "n" },
+  // Wisdom
+  { t: "OT", slug: "Job",   latin: "Liber Job", cn: "约伯记", ch: 42, pace: "p" },
+  { t: "OT", slug: "Ps",    latin: "Liber Psalmorum", cn: "诗篇", ch: 150, pace: "ps" },
+  { t: "OT", slug: "Prov",  latin: "Liber Proverbiorum", cn: "箴言", ch: 31, pace: "p" },
+  { t: "OT", slug: "Eccl",  latin: "Liber Ecclesiastæ", cn: "传道书", ch: 12, pace: "p" },
+  { t: "OT", slug: "Cant",  latin: "Canticum Canticorum", cn: "雅歌", ch: 8, pace: "p" },
+  { t: "OT", slug: "Wis",   latin: "Liber Sapientiæ", cn: "智慧篇", ch: 19, pace: "p" },
+  { t: "OT", slug: "Eccle", latin: "Liber Ecclesiastici (Sirach)", cn: "德训篇", ch: 51, pace: "p" },
+  // Prophets
+  { t: "OT", slug: "Isa",   latin: "Liber Isaiæ", cn: "以赛亚书", ch: 66, pace: "pr" },
+  { t: "OT", slug: "Jer",   latin: "Liber Jeremiæ", cn: "耶利米书", ch: 52, pace: "pr" },
+  { t: "OT", slug: "Lam",   latin: "Lamentationes Jeremiæ", cn: "耶利米哀歌", ch: 5, pace: "p" },
+  { t: "OT", slug: "Bar",   latin: "Liber Baruch", cn: "巴路克书", ch: 6, pace: "pr" },
+  { t: "OT", slug: "Eze",   latin: "Liber Ezechielis", cn: "以西结书", ch: 48, pace: "pr" },
+  { t: "OT", slug: "Dan",   latin: "Liber Danielis", cn: "但以理书", ch: 14, pace: "n" },
+  { t: "OT", slug: "Os",    latin: "Liber Osee", cn: "何西阿书", ch: 14, pace: "pr" },
+  { t: "OT", slug: "Jo",    latin: "Liber Joel", cn: "约珥书", ch: 3, pace: "pr" },
+  { t: "OT", slug: "Am",    latin: "Liber Amos", cn: "阿摩司书", ch: 9, pace: "pr" },
+  { t: "OT", slug: "Abd",   latin: "Liber Abdiæ", cn: "俄巴底亚书", ch: 1, pace: "pr" },
+  { t: "OT", slug: "Jon",   latin: "Liber Jonæ", cn: "约拿书", ch: 4, pace: "n" },
+  { t: "OT", slug: "Mic",   latin: "Liber Michææ", cn: "弥迦书", ch: 7, pace: "pr" },
+  { t: "OT", slug: "Nah",   latin: "Liber Nahum", cn: "那鸿书", ch: 3, pace: "pr" },
+  { t: "OT", slug: "Hab",   latin: "Liber Habacuc", cn: "哈巴谷书", ch: 3, pace: "pr" },
+  { t: "OT", slug: "Sop",   latin: "Liber Sophoniæ", cn: "西番雅书", ch: 3, pace: "pr" },
+  { t: "OT", slug: "Agg",   latin: "Liber Aggæi", cn: "哈该书", ch: 2, pace: "pr" },
+  { t: "OT", slug: "Zac",   latin: "Liber Zachariæ", cn: "撒迦利亚书", ch: 14, pace: "pr" },
+  { t: "OT", slug: "Mal",   latin: "Liber Malachiæ", cn: "玛拉基书", ch: 4, pace: "pr" },
+  { t: "OT", slug: "1_Mac", latin: "Liber I Machabæorum", cn: "玛加伯上", ch: 16, pace: "n" },
+  { t: "OT", slug: "2_Mac", latin: "Liber II Machabæorum", cn: "玛加伯下", ch: 15, pace: "n" }
+];
+
+function generateReadings(book) {
+  const readings = [];
+  const ch = book.ch;
+
+  if (book.pace === 'ps') {
+    const psalmGroups = [
+      [1,3],[4,6],[7,8],[9,10],[11,14],[15,17],[18,18],[19,21],
+      [22,24],[25,27],[28,30],[31,32],[33,34],[35,36],[37,37],[38,39],
+      [40,41],[42,44],[45,47],[48,49],[50,50],[51,54],[55,57],[58,60],
+      [61,63],[64,66],[67,67],[68,68],[69,71],[72,73],[74,76],[77,77],
+      [78,78],[79,81],[82,84],[85,87],[88,88],[89,89],[90,92],[93,95],
+      [96,98],[99,101],[102,102],[103,103],[104,104],[105,105],[106,106],
+      [107,108],[109,110],[111,113],[114,116],[117,117],[118,118],
+      [119,121],[122,124],[125,127],[128,130],[131,133],[134,136],
+      [137,139],[140,142],[143,145],[146,148],[149,150]
+    ];
+    psalmGroups.forEach(([a,b]) => {
+      readings.push({
+        ref: a === b ? `Ps. ${a}` : `Ps. ${a}\u2013${b}`,
+        chStart: a
+      });
+    });
+    return readings;
+  }
+
+  if (book.pace === 'l' && ch > 10) {
+    for (let i = 1; i <= ch; i += 2) {
+      const end = Math.min(i + 1, ch);
+      readings.push({
+        ref: i === end ? `Capitulum ${i}` : `Capitula ${i}\u2013${end}`,
+        chStart: i
+      });
+    }
+    return readings;
+  }
+
+  if (book.pace === 'e' && ch === 1) {
+    readings.push({ ref: `Liber totus`, chStart: 1 });
+    return readings;
+  }
+
+  for (let i = 1; i <= ch; i++) {
+    readings.push({ ref: `Capitulum ${i}`, chStart: i });
+  }
+  return readings;
+}
+
+const SCHEDULE = [];
+BOOKS.forEach((book, bIdx) => {
+  const readings = generateReadings(book);
+  readings.forEach((r, rIdx) => {
+    SCHEDULE.push({
+      id: `b${bIdx}-ch${r.chStart}`,
+      bookIdx: bIdx,
+      book: book,
+      ref: r.ref,
+      chStart: r.chStart,
+      dayInBook: rIdx + 1,
+      totalInBook: readings.length
+    });
+  });
+});
+
+const TOTAL_DAYS = SCHEDULE.length;
+
+// Direct chapter URL: https://catholicbible.online/side_by_side/{OT|NT}/{slug}/ch_{N}
+function buildUrl(book, chapter) {
+  return `https://catholicbible.online/side_by_side/${book.t}/${book.slug}/ch_${chapter}`;
+}
+
+// Audio URL — only NT books have wp field; returns null for OT or chapters without audio
+// Format: https://www.wordproject.org/bibles/vg/{wp}/{chapter}.htm
+function buildAudioUrl(book, chapter) {
+  if (!book.wp) return null;
+  return `https://www.wordproject.org/bibles/vg/${book.wp}/${chapter}.htm`;
+}
+
+const STORAGE_KEY = 'vulgata-lectio-progress-v3';
+const SYNC_CONFIG_KEY = 'vulgata-lectio-sync-config';
+
+// State structure:
+//   done: { [id]: true/false }  — whether reading is completed
+//   started: { [id]: ISO date string } — when user first clicked "Lege"
+//   completed: { [id]: ISO date string } — when marked "Perfeci"
+//   activeTab: 'OT' | 'NT'
+//   lastModified: ISO datetime string — for cloud sync conflict resolution
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return { done: {}, started: {}, completed: {}, activeTab: 'NT', lastModified: null };
+    const parsed = JSON.parse(raw);
+    if (!parsed.activeTab) parsed.activeTab = 'NT';
+    if (!parsed.started) parsed.started = {};
+    if (!parsed.completed) parsed.completed = {};
+    if (!parsed.lastModified) parsed.lastModified = null;
+    // migrate from v2: if done but no completed date, set a marker
+    for (const id in parsed.done) {
+      if (parsed.done[id] && !parsed.completed[id]) {
+        parsed.completed[id] = '—';
+      }
+    }
+    return parsed;
+  } catch(e) {
+    return { done: {}, started: {}, completed: {}, activeTab: 'NT', lastModified: null };
+  }
+}
+
+function saveProgress(state, skipCloudSync) {
+  state.lastModified = new Date().toISOString();
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch(e) { console.error(e); }
+  if (!skipCloudSync) scheduleCloudSync();
+}
+
+// ===========================================================================
+// CLOUD SYNC via GitHub Gist
+// ===========================================================================
+// User sets: PAT (Personal Access Token with 'gist' scope) + Gist ID
+// Token is stored in localStorage (only on this device, never sent anywhere
+// except api.github.com over HTTPS).
+// ===========================================================================
+
+function loadSyncConfig() {
+  try {
+    const raw = localStorage.getItem(SYNC_CONFIG_KEY);
+    if (!raw) return { token: '', gistId: '', enabled: false };
+    return JSON.parse(raw);
+  } catch(e) {
+    return { token: '', gistId: '', enabled: false };
+  }
+}
+
+function saveSyncConfig(config) {
+  try { localStorage.setItem(SYNC_CONFIG_KEY, JSON.stringify(config)); }
+  catch(e) { console.error(e); }
+}
+
+let syncConfig = loadSyncConfig();
+let cloudSyncTimer = null;
+let cloudSyncStatus = 'idle';  // 'idle' | 'syncing' | 'error' | 'success' | 'disabled'
+
+function setSyncStatus(status, msg) {
+  cloudSyncStatus = status;
+  const el = document.getElementById('syncStatus');
+  if (!el) return;
+  const icons = {
+    idle: '☁',
+    syncing: '⟳',
+    success: '✓',
+    error: '⚠',
+    disabled: '○'
+  };
+  const colors = {
+    idle: 'var(--ink-faded)',
+    syncing: 'var(--gold)',
+    success: '#5a8a3a',
+    error: 'var(--rubric)',
+    disabled: 'var(--ink-faded)'
+  };
+  el.innerHTML = `<span style="color:${colors[status]}">${icons[status]}</span> ${msg || status}`;
+}
+
+// Debounced cloud sync — wait 1.5s after last change before syncing
+function scheduleCloudSync() {
+  if (!syncConfig.enabled || !syncConfig.token || !syncConfig.gistId) return;
+  if (cloudSyncTimer) clearTimeout(cloudSyncTimer);
+  cloudSyncTimer = setTimeout(() => doCloudSync(), 1500);
+}
+
+async function doCloudSync() {
+  if (!syncConfig.enabled || !syncConfig.token || !syncConfig.gistId) {
+    setSyncStatus('disabled', 'Sync inactivum');
+    return;
+  }
+  setSyncStatus('syncing', 'Sync...');
+  try {
+    const payload = JSON.stringify(state, null, 2);
+    const resp = await fetch(`https://api.github.com/gists/${syncConfig.gistId}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${syncConfig.token}`,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        files: {
+          'vulgata-lectio-progress.json': { content: payload }
+        }
+      })
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    setSyncStatus('success', `Sync ${new Date().toLocaleTimeString()}`);
+  } catch(e) {
+    console.error('Cloud sync failed:', e);
+    setSyncStatus('error', `Error: ${e.message}`);
+  }
+}
+
+async function pullFromCloud(showAlerts) {
+  if (!syncConfig.enabled || !syncConfig.token || !syncConfig.gistId) {
+    if (showAlerts) alert('Sync nondum configuratum');
+    return false;
+  }
+  setSyncStatus('syncing', 'Cloud lego...');
+  try {
+    const resp = await fetch(`https://api.github.com/gists/${syncConfig.gistId}`, {
+      headers: {
+        'Authorization': `Bearer ${syncConfig.token}`,
+        'Accept': 'application/vnd.github+json'
+      }
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    const file = data.files['vulgata-lectio-progress.json'];
+    if (!file) {
+      // First time — push current local state up
+      setSyncStatus('idle', 'Cloud vacuum, mittam...');
+      await doCloudSync();
+      return false;
+    }
+    const cloudState = JSON.parse(file.content);
+    const cloudTime = cloudState.lastModified ? new Date(cloudState.lastModified).getTime() : 0;
+    const localTime = state.lastModified ? new Date(state.lastModified).getTime() : 0;
+
+    if (cloudTime > localTime) {
+      // Cloud is newer — pull it down
+      state = cloudState;
+      if (!state.activeTab) state.activeTab = 'NT';
+      if (!state.started) state.started = {};
+      if (!state.completed) state.completed = {};
+      saveProgress(state, true);  // save locally but don't push back to cloud
+      updateProgressDisplay();
+      renderToday();
+      renderAllPanes();
+      setSyncStatus('success', `Tractum ex cloud · ${new Date().toLocaleTimeString()}`);
+      return true;
+    } else if (localTime > cloudTime) {
+      // Local is newer — push up
+      await doCloudSync();
+      return false;
+    } else {
+      setSyncStatus('success', `Synchronum · ${new Date().toLocaleTimeString()}`);
+      return false;
+    }
+  } catch(e) {
+    console.error('Cloud pull failed:', e);
+    setSyncStatus('error', `Error: ${e.message}`);
+    if (showAlerts) alert('Lectio ex cloud defecit: ' + e.message);
+    return false;
+  }
+}
+
+let state = loadProgress();
+
+function getDoneCount() {
+  return Object.keys(state.done).filter(k => state.done[k]).length;
+}
+
+function getDoneCountByTestament(t) {
+  let count = 0;
+  for (const item of SCHEDULE) {
+    if (item.book.t === t && state.done[item.id]) count++;
+  }
+  return count;
+}
+
+function getTotalByTestament(t) {
+  return SCHEDULE.filter(item => item.book.t === t).length;
+}
+
+function getTodaysReading() {
+  for (const item of SCHEDULE) {
+    if (!state.done[item.id]) return item;
+  }
+  return null;
+}
+
+function updateProgressDisplay() {
+  const done = getDoneCount();
+  const pct = TOTAL_DAYS > 0 ? (done / TOTAL_DAYS * 100) : 0;
+  document.getElementById('daysCount').textContent = `${done} / ${TOTAL_DAYS} dies · ${pct.toFixed(1)}%`;
+
+  const otDone = getDoneCountByTestament('OT');
+  const otTotal = getTotalByTestament('OT');
+  const ntDone = getDoneCountByTestament('NT');
+  const ntTotal = getTotalByTestament('NT');
+
+  const otPct = otTotal > 0 ? (otDone / otTotal * 100) : 0;
+  const ntPct = ntTotal > 0 ? (ntDone / ntTotal * 100) : 0;
+
+  document.getElementById('ntStat').textContent = `${ntDone} / ${ntTotal} · ${ntPct.toFixed(1)}%`;
+  document.getElementById('otStat').textContent = `${otDone} / ${otTotal} · ${otPct.toFixed(1)}%`;
+  document.getElementById('ntFill').style.width = `${ntPct}%`;
+  document.getElementById('otFill').style.width = `${otPct}%`;
+
+  // Tab counts
+  document.getElementById('otCount').textContent = ` ${otDone}/${otTotal}`;
+  document.getElementById('ntCount').textContent = ` ${ntDone}/${ntTotal}`;
+}
+
+function renderToday() {
+  const today = getTodaysReading();
+  if (!today) {
+    document.getElementById('todayMeta').textContent = 'Consummatum est';
+    document.getElementById('todayTitle').textContent = 'Deo gratias';
+    document.getElementById('todayTitleCn').textContent = 'Lectio Vulgatæ perfecta';
+    document.getElementById('todayDates').textContent = '';
+    document.getElementById('todayPortion').textContent = 'Omnes LXXIII libros perlegisti. Iterum legere licet.';
+    document.getElementById('markDoneBtn').style.display = 'none';
+    document.getElementById('todayLink').style.display = 'none';
+    document.getElementById('todayAudio').style.display = 'none';
+    return;
+  }
+
+  const dayNum = SCHEDULE.indexOf(today) + 1;
+  const started = state.started[today.id];
+
+  document.getElementById('todayMeta').textContent =
+    `Dies ${dayNum} / ${TOTAL_DAYS}`;
+  document.getElementById('todayTitle').textContent =
+    `${today.book.latin}, ${today.ref}`;
+  document.getElementById('todayTitleCn').textContent =
+    `${today.book.cn} · ${today.dayInBook} / ${today.totalInBook}`;
+
+  const datesEl = document.getElementById('todayDates');
+  if (started) {
+    datesEl.innerHTML = `<strong>Incepi:</strong> ${fmtDate(started)}`;
+  } else {
+    datesEl.textContent = '';
+  }
+
+  document.getElementById('todayPortion').textContent =
+    `Preme «Lege» ut capitulum apud catholicbible.online aperias.`;
+  document.getElementById('todayLink').href = buildUrl(today.book, today.chStart);
+  document.getElementById('todayLink').style.display = '';
+  document.getElementById('markDoneBtn').style.display = '';
+
+  // Audio button: only for NT books
+  const audioUrl = buildAudioUrl(today.book, today.chStart);
+  const audioEl = document.getElementById('todayAudio');
+  if (audioUrl) {
+    audioEl.href = audioUrl;
+    audioEl.style.display = '';
+  } else {
+    audioEl.style.display = 'none';
+  }
+}
+
+function renderBookPane(testament) {
+  const pane = document.getElementById(`pane-${testament}`);
+  pane.innerHTML = '';
+
+  const todayId = (getTodaysReading() || {}).id;
+  const books = BOOKS.map((b, i) => ({ ...b, origIdx: i })).filter(b => b.t === testament);
+
+  books.forEach((book) => {
+    const bIdx = book.origIdx;
+    const bookReadings = SCHEDULE.filter(s => s.bookIdx === bIdx);
+    const doneInBook = bookReadings.filter(r => state.done[r.id]).length;
+    const totalInBook = bookReadings.length;
+    const allDone = doneInBook === totalInBook;
+    const hasToday = bookReadings.some(r => r.id === todayId);
+
+    const section = document.createElement('div');
+    section.className = 'book-section' +
+      (hasToday ? ' open' : '') +
+      (allDone ? ' all-done' : '');
+
+    const header = document.createElement('div');
+    header.className = 'book-header';
+    header.innerHTML = `
+      <div class="book-title">
+        <span class="book-title-latin">${book.latin}</span>
+        <span class="book-title-cn">${book.cn}</span>
+      </div>
+      <div class="book-progress">
+        <span>${doneInBook} / ${totalInBook}${allDone ? ' ✓' : ''}</span>
+        <span class="book-caret">\u25B8</span>
+      </div>
+    `;
+    header.addEventListener('click', () => section.classList.toggle('open'));
+
+    const list = document.createElement('div');
+    list.className = 'readings-list';
+
+    bookReadings.forEach((r) => {
+      const item = document.createElement('div');
+      const isDone = !!state.done[r.id];
+      const isToday = r.id === todayId;
+      const startedDate = state.started[r.id];
+      const completedDate = state.completed[r.id];
+      item.className = 'reading-item' +
+        (isDone ? ' done' : '') +
+        (isToday ? ' today' : '');
+
+      let datesHtml = '';
+      const parts = [];
+      if (startedDate && startedDate !== '—') parts.push(`<span class="date-started">Incepi ${fmtDate(startedDate)}</span>`);
+      if (completedDate && completedDate !== '—') parts.push(`<span class="date-completed">Perfeci ${fmtDate(completedDate)}</span>`);
+      if (parts.length) datesHtml = `<div class="reading-dates">${parts.join(' · ')}</div>`;
+
+      // Two buttons per row: Lege (auto-marks start) + Perfeci
+      const readBtnLabel = 'Lege';
+      const doneBtnHtml = isDone
+        ? `<button class="row-btn row-btn-done-state" data-action="undo">Perfectum ✓</button>`
+        : `<button class="row-btn row-btn-complete" data-action="complete">Perfeci</button>`;
+
+      // Audio button only for NT books (wp field present)
+      const audioUrl = buildAudioUrl(book, r.chStart);
+      const audioBtnHtml = audioUrl
+        ? `<a href="${audioUrl}" target="_blank" rel="noopener" class="row-btn row-btn-audio" data-action="audio">Audi</a>`
+        : '';
+
+      item.innerHTML = `
+        <div class="reading-check"></div>
+        <div class="reading-body">
+          <div class="reading-day">Dies ${SCHEDULE.indexOf(r) + 1}</div>
+          <div class="reading-ref">${r.ref}</div>
+          ${isToday ? '<div class="reading-note">Hodie</div>' : ''}
+          ${datesHtml}
+        </div>
+        <div class="row-actions">
+          <a href="${buildUrl(book, r.chStart)}" target="_blank" rel="noopener" class="row-btn row-btn-read" data-action="read">${readBtnLabel}</a>
+          ${audioBtnHtml}
+          ${doneBtnHtml}
+        </div>
+      `;
+
+      // The "Lege" link auto-records start time
+      const readBtn = item.querySelector('[data-action="read"]');
+      readBtn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        markStarted(r.id);
+        // navigation happens naturally via the <a> tag
+      });
+
+      // The "Audi" link (NT only) also auto-records start time
+      const audioBtn = item.querySelector('[data-action="audio"]');
+      if (audioBtn) {
+        audioBtn.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          markStarted(r.id);
+        });
+      }
+
+      // The "Perfeci" / "Perfectum" button toggles completion
+      const doneBtn = item.querySelector('[data-action="complete"], [data-action="undo"]');
+      doneBtn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const action = ev.currentTarget.dataset.action;
+        if (action === 'complete') markCompleted(r.id);
+        else if (action === 'undo') unmarkCompleted(r.id);
+      });
+
+      // Click anywhere else on the row also opens completion menu (for managing dates manually)
+      item.addEventListener('click', (ev) => {
+        if (ev.target.closest('.row-btn')) return;
+        showReadingMenu(r);
+      });
+      list.appendChild(item);
+    });
+
+    section.appendChild(header);
+    section.appendChild(list);
+    pane.appendChild(section);
+  });
+}
+
+function renderAllPanes() {
+  renderBookPane('OT');
+  renderBookPane('NT');
+}
+
+function todayISO() {
+  const d = new Date();
+  return d.getFullYear() + '-' +
+    String(d.getMonth()+1).padStart(2,'0') + '-' +
+    String(d.getDate()).padStart(2,'0');
+}
+
+function fmtDate(iso) {
+  if (!iso || iso === '—') return iso || '';
+  // Accept both ISO datetime and YYYY-MM-DD
+  const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return iso;
+  return `${m[1]}-${m[2]}-${m[3]}`;
+}
+
+function markStarted(id) {
+  if (!state.started[id]) {
+    state.started[id] = todayISO();
+    saveProgress(state);
+    renderAllPanes();
+    renderToday();
+  }
+}
+
+function markCompleted(id) {
+  state.done[id] = true;
+  if (!state.started[id]) state.started[id] = todayISO();
+  state.completed[id] = todayISO();
+  saveProgress(state);
+  updateProgressDisplay();
+  renderToday();
+  renderAllPanes();
+}
+
+function unmarkCompleted(id) {
+  state.done[id] = false;
+  delete state.completed[id];
+  saveProgress(state);
+  updateProgressDisplay();
+  renderToday();
+  renderAllPanes();
+}
+
+function clearStart(id) {
+  delete state.started[id];
+  saveProgress(state);
+  renderAllPanes();
+  renderToday();
+}
+
+// legacy toggleDone kept for backward compatibility — now routes to proper fn
+function toggleDone(id) {
+  if (state.done[id]) {
+    unmarkCompleted(id);
+  } else {
+    markCompleted(id);
+  }
+}
+
+function activateTab(t) {
+  state.activeTab = t;
+  saveProgress(state);
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === t);
+  });
+  document.querySelectorAll('.books-pane').forEach(pane => {
+    pane.classList.toggle('active', pane.id === `pane-${t}`);
+  });
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+});
+
+function showReadingMenu(r) {
+  const isDone = !!state.done[r.id];
+  const startedDate = state.started[r.id];
+  const completedDate = state.completed[r.id];
+
+  let statusHtml = '<p style="margin:0.2rem 0;">';
+  if (startedDate && startedDate !== '—') {
+    statusHtml += `<strong>Incepi:</strong> ${fmtDate(startedDate)}<br>`;
+  }
+  if (completedDate && completedDate !== '—') {
+    statusHtml += `<strong>Perfeci:</strong> ${fmtDate(completedDate)}`;
+  }
+  statusHtml += '</p>';
+  if (!startedDate && !completedDate) statusHtml = '<p style="margin:0.2rem 0; color: var(--ink-faded);">Nondum inceptum</p>';
+
+  let buttons = '';
+  if (!startedDate) {
+    buttons += `<button class="btn btn-tertiary" data-action="start">Incipere</button>`;
+  }
+  if (!isDone) {
+    buttons += `<button class="btn btn-primary" data-action="complete">Perficere</button>`;
+  }
+  if (isDone) {
+    buttons += `<button class="btn btn-secondary" data-action="uncomplete">Revocare</button>`;
+  }
+  if (startedDate) {
+    buttons += `<button class="btn btn-secondary" data-action="clear-start">Diem initii delere</button>`;
+  }
+
+  showModal(`
+    <h3>${r.book.latin}</h3>
+    <p style="font-size:1rem; color: var(--ink); margin-top: 0.3rem;">${r.book.cn} · ${r.ref}</p>
+    ${statusHtml}
+    <div class="modal-actions" id="readingActions">
+      ${buttons}
+      <button class="btn btn-secondary" onclick="hideModal()">Claudere</button>
+    </div>
+  `);
+  setTimeout(() => {
+    document.querySelectorAll('#readingActions [data-action]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const action = btn.dataset.action;
+        if (action === 'start') markStarted(r.id);
+        else if (action === 'complete') markCompleted(r.id);
+        else if (action === 'uncomplete') unmarkCompleted(r.id);
+        else if (action === 'clear-start') clearStart(r.id);
+        hideModal();
+      });
+    });
+  }, 50);
+}
+window.showReadingMenu = showReadingMenu;
+
+function showModal(html) {
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('modalBackdrop').classList.add('show');
+}
+
+function hideModal() {
+  document.getElementById('modalBackdrop').classList.remove('show');
+}
+document.getElementById('modalBackdrop').addEventListener('click', (e) => {
+  if (e.target.id === 'modalBackdrop') hideModal();
+});
+window.hideModal = hideModal;
+
+// "Lege" link auto-records start time when clicked
+document.getElementById('todayLink').addEventListener('click', () => {
+  const today = getTodaysReading();
+  if (today) markStarted(today.id);
+  // Navigation happens via the <a> tag's href
+});
+
+// "Audi" link also auto-records start time
+document.getElementById('todayAudio').addEventListener('click', () => {
+  const today = getTodaysReading();
+  if (today) markStarted(today.id);
+});
+
+document.getElementById('markDoneBtn').addEventListener('click', () => {
+  const today = getTodaysReading();
+  if (today) markCompleted(today.id);
+});
+
+// ============ Sync button — opens the cloud sync setup dialog ============
+document.getElementById('syncBtn').addEventListener('click', () => {
+  showModal(`
+    <h3>☁ Synchronia per cloud (GitHub Gist)</h3>
+    <p style="font-size:0.9rem;">Per token GitHub et ID gisti, progressum inter omnia tua instrumenta synchronizatum custodi. Datum tua propria sunt — nemo aliquid videt nisi tu.</p>
+
+    <div style="margin-top:0.8rem;">
+      <label style="display:block; font-size:0.85rem; color:var(--ink-light); margin-bottom:0.2rem;">
+        <strong>GitHub Personal Access Token</strong> (gist scope)
+      </label>
+      <input type="password" id="syncToken" value="${syncConfig.token || ''}" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="width:100%; padding:0.4rem; font-family:monospace; font-size:12px; background:var(--parchment-shade); border:1px solid var(--ink-faded); color:var(--ink);">
+    </div>
+
+    <div style="margin-top:0.6rem;">
+      <label style="display:block; font-size:0.85rem; color:var(--ink-light); margin-bottom:0.2rem;">
+        <strong>Gist ID</strong> <span style="font-size:0.78rem; color:var(--ink-faded);">(in URL gisti tui apparet, e.g. gist.github.com/user/<u>abc123...</u>)</span>
+      </label>
+      <input type="text" id="syncGistId" value="${syncConfig.gistId || ''}" placeholder="abc123def456..." style="width:100%; padding:0.4rem; font-family:monospace; font-size:12px; background:var(--parchment-shade); border:1px solid var(--ink-faded); color:var(--ink);">
+    </div>
+
+    <div style="margin-top:0.6rem;">
+      <label style="display:flex; align-items:center; gap:0.4rem; font-size:0.9rem;">
+        <input type="checkbox" id="syncEnabled" ${syncConfig.enabled ? 'checked' : ''}>
+        <span>Synchroniam activare</span>
+      </label>
+    </div>
+
+    <details style="margin-top:0.8rem; font-size:0.82rem;">
+      <summary style="cursor:pointer; color:var(--rubric);">Quomodo? (Instructiones)</summary>
+      <ol style="padding-left:1.2rem; margin-top:0.4rem; line-height:1.55;">
+        <li>Vade ad <a href="https://gist.github.com/" target="_blank" rel="noopener" style="color:var(--rubric);">gist.github.com</a> et crea novum gistum:
+          <ul style="margin-top:0.2rem;">
+            <li>Filename: <code>vulgata-lectio-progress.json</code></li>
+            <li>Content: <code>{}</code></li>
+            <li>Preme «Create secret gist»</li>
+          </ul>
+        </li>
+        <li>Copia ID gisti ex URL barra (post «/user/»)</li>
+        <li>Vade ad <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener" style="color:var(--rubric);">github.com/settings/tokens</a> → Fine-grained tokens → Generate new token:
+          <ul style="margin-top:0.2rem;">
+            <li>Token name: «Vulgata Lectio»</li>
+            <li>Expiration: 1 year (vel «No expiration»)</li>
+            <li>Resource owner: tu</li>
+            <li>Permissions → Account permissions → <strong>Gists: Read and write</strong></li>
+            <li>Preme «Generate token», copia (incipit «github_pat_...»)</li>
+          </ul>
+        </li>
+        <li>Hic infra agglutina ambo, activa, et serva</li>
+        <li>In altero instrumento, idem token et ID pone — synchronia automatica fiet</li>
+      </ol>
+    </details>
+
+    <div class="modal-actions" style="margin-top:1rem;">
+      <button class="btn btn-secondary" onclick="hideModal()">Negare</button>
+      <button class="btn btn-tertiary" id="syncTestBtn">Probare</button>
+      <button class="btn btn-primary" id="syncSaveBtn">Servare</button>
+    </div>
+  `);
+
+  setTimeout(() => {
+    document.getElementById('syncSaveBtn').addEventListener('click', async () => {
+      syncConfig.token = document.getElementById('syncToken').value.trim();
+      syncConfig.gistId = document.getElementById('syncGistId').value.trim();
+      syncConfig.enabled = document.getElementById('syncEnabled').checked;
+      saveSyncConfig(syncConfig);
+      hideModal();
+      if (syncConfig.enabled && syncConfig.token && syncConfig.gistId) {
+        await pullFromCloud(false);
+      } else {
+        setSyncStatus('disabled', 'Sync inactivum');
+      }
+    });
+    document.getElementById('syncTestBtn').addEventListener('click', async () => {
+      const token = document.getElementById('syncToken').value.trim();
+      const gistId = document.getElementById('syncGistId').value.trim();
+      if (!token || !gistId) { alert('Token et Gist ID requiruntur'); return; }
+      const btn = document.getElementById('syncTestBtn');
+      btn.textContent = 'Probans...';
+      try {
+        const resp = await fetch(`https://api.github.com/gists/${gistId}`, {
+          headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status} — ${resp.statusText}`);
+        const data = await resp.json();
+        btn.textContent = '✓ OK';
+        btn.style.background = '#5a8a3a';
+        btn.style.color = 'var(--parchment)';
+        setTimeout(() => {
+          btn.textContent = 'Probare';
+          btn.style.background = '';
+          btn.style.color = '';
+        }, 2500);
+      } catch(e) {
+        alert('Probatio defecit: ' + e.message + '\n\n' +
+              'Verifica: (1) Token correcte copiatum est? ' +
+              '(2) Permissio "Gists: Read and write" data est? ' +
+              '(3) Gist ID correcte copiatum est?');
+        btn.textContent = 'Probare';
+      }
+    });
+  }, 50);
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  showModal(`
+    <h3>Omnem progressum restituere?</h3>
+    <p>Omnia signa lectionis delebuntur. Hoc revocari non potest.</p>
+    <p>Suadeo prius progressum exportare.</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="hideModal()">Negare</button>
+      <button class="btn btn-primary" id="confirmReset">Restituere</button>
+    </div>
+  `);
+  setTimeout(() => {
+    document.getElementById('confirmReset').addEventListener('click', () => {
+      state = { done: {}, startDate: null, activeTab: state.activeTab };
+      saveProgress(state);
+      updateProgressDisplay();
+      renderToday();
+      renderAllPanes();
+      hideModal();
+    });
+  }, 50);
+});
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const data = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+  showModal(`
+    <h3>Progressum exportare</h3>
+    <p>Textum infra describe et serva. Ad restituendum, utere «Importare».</p>
+    <textarea readonly style="width:100%; height:110px; font-family:monospace; font-size:12px; background:var(--parchment-shade); border:1px solid var(--ink-faded); padding:0.5rem; color:var(--ink);">${data}</textarea>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="hideModal()">Claudere</button>
+      <button class="btn btn-primary" id="copyExport">Describere</button>
+    </div>
+  `);
+  setTimeout(() => {
+    document.getElementById('copyExport').addEventListener('click', () => {
+      const ta = document.querySelector('.modal textarea');
+      ta.select();
+      try {
+        navigator.clipboard.writeText(ta.value);
+        document.getElementById('copyExport').textContent = 'Descriptum!';
+      } catch(e) { document.execCommand('copy'); }
+    });
+  }, 50);
+});
+
+document.getElementById('importBtn').addEventListener('click', () => {
+  showModal(`
+    <h3>Progressum importare</h3>
+    <p>Textum prius exportatum hic agglutina. Hoc progressum praesentem <strong>delebit</strong>.</p>
+    <textarea id="importField" style="width:100%; height:110px; font-family:monospace; font-size:12px; background:var(--parchment-shade); border:1px solid var(--ink-faded); padding:0.5rem; color:var(--ink);" placeholder="Hic agglutina..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="hideModal()">Negare</button>
+      <button class="btn btn-primary" id="confirmImport">Importare</button>
+    </div>
+  `);
+  setTimeout(() => {
+    document.getElementById('confirmImport').addEventListener('click', () => {
+      try {
+        const text = document.getElementById('importField').value.trim();
+        const decoded = JSON.parse(decodeURIComponent(escape(atob(text))));
+        if (decoded && typeof decoded.done === 'object') {
+          state = decoded;
+          if (!state.activeTab) state.activeTab = 'OT';
+          saveProgress(state);
+          updateProgressDisplay();
+          renderToday();
+          renderAllPanes();
+          activateTab(state.activeTab);
+          hideModal();
+        } else {
+          alert('Forma datorum invalida');
+        }
+      } catch(e) {
+        alert('Importatio defecit: ' + e.message);
+      }
+    });
+  }, 50);
+});
+
+updateProgressDisplay();
+renderToday();
+renderAllPanes();
+activateTab(state.activeTab);
+
+const todayItem = getTodaysReading();
+if (todayItem && todayItem.book.t !== state.activeTab) {
+  activateTab(todayItem.book.t);
+}
+
+// Initialize cloud sync status indicator
+if (syncConfig.enabled && syncConfig.token && syncConfig.gistId) {
+  setSyncStatus('idle', 'Sync activum');
+  // Pull from cloud on startup (in case other device made changes)
+  setTimeout(() => pullFromCloud(false), 500);
+} else {
+  setSyncStatus('disabled', 'Sync inactivum');
+}
+</script>
+</body>
+</html>
